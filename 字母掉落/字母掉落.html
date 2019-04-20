@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body,html{
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+        .box2{
+            width: 100%;
+            height: 40px;
+            
+            text-align: center;
+        }
+        button{
+            width: 80px;
+            height: 30px;
+            margin-right:20px; ;
+        }
+        span{
+            line-height: 40px;
+            font-size: 20px;
+            color: #fff;
+        }
+        em {
+            display: inline-block;
+            width: 50px;
+            line-height: 40px;
+            font-size: 20px;
+            color: #fff;
+            text-align: left;
+        }
+        .letter{
+            display: inline-block;
+            position: absolute;
+            font-size: 25px;
+            color: gold;
+            font-weight: 900;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            var btn = document.getElementsByTagName("button")[0];
+            var time = document.getElementsByTagName("em")[1];
+            var numNum = document.getElementsByTagName("em")[0];
+
+            var timeNum = 0;
+            var gameover = false;
+            var timer2;
+            var num = 0;
+            function letter() {
+                this.x = Math.random()*1600 + 100;
+                this.y = 50;
+                this.speed = Math.random()*4 + 1;
+                var letDiv = document.createElement("div");
+                var letStr = str[Math.floor(Math.random()*26)];
+                letDiv.innerHTML = letStr;
+                letDiv.className = "letter";
+                letDiv.style.top = this.y  + "px";
+                letDiv.style.left = this.x  + "px";
+                document.body.appendChild(letDiv);
+                var that = this;
+                that.timer = setInterval(function () {
+                    console.log("666");
+                    if(gameover){
+                        clearInterval( that.timer);
+                    }else{
+                       that.y = that.y + that.speed;
+                        if(that.y >= client().height - 50){
+                            that.y = 50;
+                            that.x = Math.random()*1600 + 100;
+                        }
+                        letDiv.style.top = that.y  + "px";
+                        letDiv.style.left = that.x  + "px";
+                    }
+
+                },30)
+            }
+            btn.onclick = function () {
+                if(gameover){
+                    num = 0;
+                    timeNum= 0;
+                    numNum.innerHTML= num;
+                    time.innerHTML = timeNum;
+                    gameover = false;
+                }
+
+                for(var i=0 ; i<26; i++){
+                    new letter();
+                }
+                timer2 = setInterval(function () {
+                    timeNum++;
+                    time.innerHTML = timeNum;
+                    if(document.body.children.length == 1){
+                        gameover = true;
+                        clearInterval(timer2)
+                    }
+                },1000)
+                var letterArr = document.body.children;
+                document.onkeydown = function (event) {
+                    var evt = event || window.event;
+                    var keyStr = String.fromCharCode(evt.keyCode);
+                    console.log(keyStr);
+                    for(var i=1; i<letterArr.length ; i++ ){
+                        if(keyStr == letterArr[i].innerHTML){
+                            num++;
+                            numNum.innerHTML= num;
+                            document.body.removeChild(letterArr[i]);
+                        }
+                    }
+
+                }
+            }
+
+            function client() {
+                return {
+                    width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 0,
+                    height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0
+                };
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="box">
+        <div class="box2">
+            <button>开始</button><span>得分:</span><em>0</em><span>计时:</span><em class="time">0</em>
+        </div>
+    </div>
+
+</body>
+</html>

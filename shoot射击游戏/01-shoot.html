@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/shoot.css">
+</head>
+<script>
+    window.onload = function () {
+        var mScreen = document.getElementById("mScreen");
+        var show = document.getElementById("show");
+        var fireEle = document.getElementById("fireEle");
+        var shots = 0 ;
+        var score = 0 ;
+        var speed = 0;
+
+        mScreen.onclick = function () {
+            shots++;
+            update();
+        }
+
+        fireEle.onclick = function () {
+            score++;
+        }
+
+        function update() {
+            show.innerHTML = "射击:" + shots + "分数:"+score;
+        }
+        update();
+
+        function move() {
+
+            if(fireEle.offsetLeft > screen.width - fireEle.offsetWidth -10){
+                speed = -10;
+            }else if(fireEle.offsetLeft < 10){
+                speed = 10;
+            }
+            console.log( speed + "px");
+            fireEle.style.left = fireEle.offsetLeft + speed + "px";
+            fireEle.style.top = (100 * Math.sin(fireEle.offsetLeft / 100)) + 200 + "px";
+        }
+
+        setInterval(move,100);
+    }
+</script>
+<body>
+<div id="mScreen">
+    <div id="show"></div>
+    <img alt="打我呀!" id="fireEle" src="images/fire2.png" ondragstart="return false;"/>
+</div>
+</body>
+</html>
